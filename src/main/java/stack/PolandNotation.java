@@ -12,6 +12,7 @@ public class PolandNotation {
         System.out.println(infixExpression);
         List<String> suffixExpression = toSuffixExpression(infixExpression);
         System.out.println(suffixExpression);
+        System.out.println(PolandNotation.calculation(suffixExpression));
     }
     //Transfer input string into string list
     public static List<String> toInfixExpression(String s){
@@ -74,6 +75,37 @@ public class PolandNotation {
             s2.add(s1.pop());
         }
         return s2;
+    }
+    // Calculation the value of a suffix expression
+    public static int calculation(List<String> sl){
+        Stack<String> s = new Stack<>();
+        for (String item : sl) {
+            if(item.matches("\\d+"))
+                s.push(item);
+            else{
+                int num2 = Integer.parseInt(s.pop());
+                int num1 = Integer.parseInt(s.pop());
+                int result = 0;
+                switch (item){
+                    case "+":
+                        result = num1 + num2;
+                        break;
+                    case "-":
+                        result = num1 - num2;
+                        break;
+                    case "*":
+                        result = num1 * num2;
+                        break;
+                    case "/":
+                        result = num1 / num2;
+                        break;
+                    default:
+                        throw new RuntimeException();
+                }
+                s.push(""+result);
+            }
+        }
+        return Integer.parseInt(s.pop());
     }
 }
 // Get the priority level of different operators
